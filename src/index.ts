@@ -101,7 +101,9 @@ server.registerTool(
   async ({ media }) => {
     const rows = modelsFor(media as Media | undefined).map(
       (m) =>
-        `- \`${m.id}\` — ${m.label} (${m.media}; ${m.scenes.join(', ')})${m.anon ? ' — runs without an API key' : ''}`
+        `- \`${m.id}\` — ${m.label} (${m.media}; ${m.scenes.join(', ')})${
+          m.anon ? ' — runs without an API key' : m.freeTier ? ' — runs on a free account' : ''
+        }`
     );
     const auth = hasApiKey()
       ? 'An API key is set: every model above is available.'
@@ -170,13 +172,13 @@ server.registerTool(
   {
     title: 'Generate a video',
     description:
-      'Generate a video clip from a prompt, or animate a still by passing image_url. Runs Veo 3.1, Kling 3.0, Seedance 2.0 and the rest of the SayMaker shelf on your own credits; many of them return sound in the same pass. Needs an API key.',
+      'Generate a video clip from a prompt, or animate a still by passing image_url. Runs Veo 3.1, Kling 3.0, Seedance 2.0 and the rest of the SayMaker shelf on your own credits; many of them return sound in the same pass. Needs an API key. On a free account, pass model minimax-h3-fast (480p or 768p, 4 to 15 seconds).',
     inputSchema: {
       prompt: z.string().describe('The shot: what happens, where, how the camera moves.'),
       image_url: z.string().optional().describe('Optional first frame — makes this image-to-video.'),
       model: z.string().optional().describe('Model id from list_models. Defaults to Seedance 2.0.'),
-      duration: z.number().optional().describe('Clip length in seconds where the model offers a choice: 4, 6, 8 or 10.'),
-      resolution: z.string().optional().describe("e.g. '480p', '720p', '1080p', '4k'."),
+      duration: z.number().optional().describe('Clip length in seconds where the model offers a choice, e.g. 4, 6, 8, 10 (MiniMax H3 Fast also 15).'),
+      resolution: z.string().optional().describe("e.g. '480p', '720p', '1080p', '4k' ('480p' or '768p' on MiniMax H3 Fast)."),
       aspect_ratio: z.string().optional().describe("e.g. '16:9', '9:16'. Default '16:9'."),
       sound: z.boolean().optional().describe('Ask for sound where the model writes it in the same pass (default true).'),
       wait: z.boolean().optional().describe('Wait for the result (default false — video takes minutes).'),

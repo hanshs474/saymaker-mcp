@@ -23,6 +23,8 @@ export type Model = {
   provider: string;
   /** Runnable without an API key, on the anonymous free wallet. */
   anon?: boolean;
+  /** Runnable on a free account's key; every other video model needs a plan or credit pack. */
+  freeTier?: boolean;
   /**
    * Slug of this model's page on saymaker.ai, where it has one. Not every model
    * in the picker has a page, and several share one (both GPT Image 2.5 tiers),
@@ -55,6 +57,9 @@ export const MODELS: Model[] = [
   { id: 'seedance-2-mini', label: 'Seedance 2 Mini', media: 'video', scenes: ['text-to-video', 'image-to-video'], provider: 'kie', page: 'seedance-2-mini' },
   { id: 'seedance-1-5-pro', label: 'Seedance 1.5 Pro', media: 'video', scenes: ['text-to-video', 'image-to-video'], provider: 'kie' },
   { id: 'minimax-h3', label: 'MiniMax H3', media: 'video', scenes: ['text-to-video', 'image-to-video'], provider: 'poyo', page: 'minimax-h3' },
+  // The video model a FREE account can run (the site's FREE_TIER_VIDEO_MODEL):
+  // 480p or 768p, 4 to 15 seconds.
+  { id: 'minimax-h3-fast', label: 'MiniMax H3 Fast', media: 'video', scenes: ['text-to-video', 'image-to-video'], provider: 'vgenv', freeTier: true },
   { id: 'ltx-2-5-fast', label: 'LTX 2.5 Fast', media: 'video', scenes: ['text-to-video', 'image-to-video'], provider: 'replicate', page: 'ltx-2-5' },
   { id: 'wan-3-0', label: 'Wan 3.0', media: 'video', scenes: ['text-to-video', 'image-to-video'], provider: 'kie', page: 'wan-3-0' },
   { id: 'saymaker-video-v1', label: 'SayMaker Video v1', media: 'video', scenes: ['text-to-video', 'image-to-video'], provider: 'kie' },
