@@ -1,0 +1,53 @@
+{
+  "name": "saymaker-mcp",
+  "version": "0.1.0",
+  "mcpName": "ai.saymaker/saymaker-mcp",
+  "description": "MCP server for SayMaker (saymaker.ai) — generate and edit images and video from any MCP client on Veo 3.1, Kling 3.0, Seedance 2.0, Nano Banana 2, GPT Image 2.5, Seedream 5.0 and more, on one credit balance.",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "ai-video-generator",
+    "ai-image-generator",
+    "veo",
+    "kling",
+    "seedance",
+    "nano-banana",
+    "image-to-video",
+    "saymaker"
+  ],
+  "homepage": "https://saymaker.ai",
+  "bugs": {
+    "url": "https://github.com/hanshs474/saymaker-mcp/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hanshs474/saymaker-mcp.git"
+  },
+  "license": "MIT",
+  "author": "SayMaker (https://saymaker.ai)",
+  "type": "module",
+  "bin": {
+    "saymaker-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc && chmod +x dist/index.js",
+    "start": "node dist/index.js",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.6.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
