@@ -1,0 +1,13 @@
+{
+  "name": "saymaker",
+  "version": "0.1.1",
+  "description": "Generate and edit images and video on SayMaker from Gemini CLI: Veo 3.1, Kling 3.0, Seedance 2.0, Nano Banana 2, GPT Image 2.5 and more on one API key.",
+  "mcpServers": {
+    "saymaker": {
+      "command": "npx",
+      "args": ["-y", "saymaker-mcp"],
+      "env": { "SAYMAKER_API_KEY": "$SAYMAKER_API_KEY" }
+    }
+  },
+  "contextFileName": "GEMINI.md"
+}

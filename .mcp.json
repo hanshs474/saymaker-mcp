@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "saymaker": {
+      "command": "npx",
+      "args": ["-y", "saymaker-mcp"],
+      "env": { "SAYMAKER_API_KEY": "${SAYMAKER_API_KEY}" }
+    }
+  }
+}

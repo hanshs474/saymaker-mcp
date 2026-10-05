@@ -1,0 +1,10 @@
+{
+  "name": "saymaker",
+  "version": "0.1.1",
+  "description": "Generate and edit images and video on SayMaker's model shelf from Claude Code, on your own API key.",
+  "author": { "name": "SayMaker", "url": "https://saymaker.ai" },
+  "homepage": "https://saymaker.ai/?utm_source=claude-plugin&utm_medium=package",
+  "repository": "https://github.com/hanshs474/saymaker-mcp",
+  "license": "MIT",
+  "keywords": ["ai", "video-generation", "image-generation", "mcp", "veo", "kling", "seedance"]
+}

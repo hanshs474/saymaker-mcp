@@ -39,6 +39,19 @@ npx saymaker-mcp
 
 Point the client at `npx -y saymaker-mcp` (stdio transport) and set `SAYMAKER_API_KEY` in its environment.
 
+### Gemini CLI
+
+```bash
+gemini extensions install https://github.com/hanshs474/saymaker-mcp
+```
+
+### Claude Code plugin
+
+```bash
+claude plugin marketplace add hanshs474/saymaker-mcp
+claude plugin install saymaker@saymaker
+```
+
 ## API key
 
 Create one at **[saymaker.ai/settings/apikeys](https://saymaker.ai/settings/apikeys)**. A key runs on your own account: same models, same credit prices, same plan, and the runs land in your library at [saymaker.ai/history](https://saymaker.ai/history).

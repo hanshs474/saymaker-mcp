@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "saymaker",
+  "description": "SayMaker for Claude Code: generate and edit images and video on Veo 3.1, Kling 3.0, Seedance 2.0, Nano Banana 2 and more.",
+  "owner": {
+    "name": "SayMaker",
+    "email": "support@saymaker.ai"
+  },
+  "plugins": [
+    {
+      "name": "saymaker",
+      "description": "Generate and edit images and video on SayMaker's model shelf from Claude Code, on your own API key.",
+      "version": "0.1.1",
+      "source": "./",
+      "category": "productivity",
+      "homepage": "https://saymaker.ai/?utm_source=claude-plugin&utm_medium=package"
+    }
+  ]
+}
