@@ -43,7 +43,7 @@ Point the client at `npx -y saymaker-mcp` (stdio transport) and set `SAYMAKER_AP
 
 Create one at **[saymaker.ai/settings/apikeys](https://saymaker.ai/settings/apikeys)**. A key runs on your own account: same models, same credit prices, same plan, and the runs land in your library at [saymaker.ai/history](https://saymaker.ai/history).
 
-Without a key the server still starts and runs on the signed-out free wallet, which covers one text-to-image run per browser-sized wallet and is capped per machine per day. Video and the paid image models need a key.
+Every run needs a key; new accounts get sign-up credits. On a free account `minimax-h3-fast` is the video model that runs, and runs wait in a queue before they start; a plan starts them at once.
 
 ## Notes
 

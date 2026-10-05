@@ -12,7 +12,6 @@ import { z } from 'zod';
 
 import {
   BASE_URL,
-  DEFAULT_ANON_IMAGE_MODEL,
   DEFAULT_IMAGE_MODEL,
   DEFAULT_VIDEO_MODEL,
   findModel,
@@ -31,7 +30,7 @@ import {
   type Task,
 } from './client.js';
 
-const server = new McpServer({ name: 'saymaker-mcp', version: '0.1.0' });
+const server = new McpServer({ name: 'saymaker-mcp', version: '0.1.1' });
 
 const text = (body: string) => ({ content: [{ type: 'text' as const, text: body }] });
 const fail = (body: string) => ({ ...text(body), isError: true as const });
@@ -67,8 +66,8 @@ async function run(
   if (!model.scenes.includes(scene)) {
     return fail(`${model.label} does not do ${scene}. Call list_models for models that do.`);
   }
-  if (!hasApiKey() && !model.anon) {
-    return fail(`${model.label} needs an API key. ${credentialsHint}`);
+  if (!hasApiKey()) {
+    return fail(`No API key set. ${credentialsHint}`);
   }
   try {
     const task = await submit({
@@ -102,12 +101,12 @@ server.registerTool(
     const rows = modelsFor(media as Media | undefined).map(
       (m) =>
         `- \`${m.id}\` — ${m.label} (${m.media}; ${m.scenes.join(', ')})${
-          m.anon ? ' — runs without an API key' : m.freeTier ? ' — runs on a free account' : ''
+          m.freeTier ? ' — runs on a free account' : ''
         }`
     );
     const auth = hasApiKey()
       ? 'An API key is set: every model above is available.'
-      : `No API key set: only the models marked above can run. ${credentialsHint}`;
+      : `No API key set, so nothing above can run yet. ${credentialsHint}`;
     return text(`SayMaker models (${rows.length}):\n\n${rows.join('\n')}\n\n${auth}`);
   }
 );
@@ -130,7 +129,7 @@ server.registerTool(
     },
   },
   async ({ prompt, model, aspect_ratio, resolution, wait = true }) => {
-    const id = model ?? (hasApiKey() ? DEFAULT_IMAGE_MODEL : DEFAULT_ANON_IMAGE_MODEL);
+    const id = model ?? DEFAULT_IMAGE_MODEL;
     // `size` carries the aspect ratio and `resolution` the pixel tier — the
     // site's own field names, kept as they are so one shape serves both.
     const options: Record<string, unknown> = {

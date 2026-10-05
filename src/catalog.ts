@@ -21,8 +21,6 @@ export type Model = {
   media: Media;
   scenes: Scene[];
   provider: string;
-  /** Runnable without an API key, on the anonymous free wallet. */
-  anon?: boolean;
   /** Runnable on a free account's key; every other video model needs a plan or credit pack. */
   freeTier?: boolean;
   /**
@@ -34,8 +32,8 @@ export type Model = {
 };
 
 export const MODELS: Model[] = [
-  { id: 'saymaker-image-v1', label: 'SayMaker Image v1', media: 'image', scenes: ['text-to-image'], provider: 'kie', anon: true },
-  { id: 'nano-banana-2-lite', label: 'Nano Banana 2 Lite', media: 'image', scenes: ['text-to-image', 'image-to-image'], provider: 'kie', page: 'nano-banana-2-lite', anon: true },
+  { id: 'saymaker-image-v1', label: 'SayMaker Image v1', media: 'image', scenes: ['text-to-image'], provider: 'kie' },
+  { id: 'nano-banana-2-lite', label: 'Nano Banana 2 Lite', media: 'image', scenes: ['text-to-image', 'image-to-image'], provider: 'kie', page: 'nano-banana-2-lite' },
   { id: 'nano-banana-2', label: 'Nano Banana 2', media: 'image', scenes: ['text-to-image', 'image-to-image'], provider: 'poyo', page: 'nano-banana-2' },
   { id: 'nano-banana-pro', label: 'Nano Banana Pro', media: 'image', scenes: ['text-to-image', 'image-to-image'], provider: 'poyo' },
   { id: 'gpt-image-2', label: 'GPT Image 2', media: 'image', scenes: ['text-to-image', 'image-to-image'], provider: 'poyo' },
@@ -69,8 +67,6 @@ export const MODELS: Model[] = [
 
 export const DEFAULT_IMAGE_MODEL = 'nano-banana-2';
 export const DEFAULT_VIDEO_MODEL = 'seedance-2';
-/** What an anonymous caller (no API key) can afford: one text-to-image run. */
-export const DEFAULT_ANON_IMAGE_MODEL = 'saymaker-image-v1';
 
 export function findModel(id: string): Model | undefined {
   return MODELS.find((m) => m.id === id);

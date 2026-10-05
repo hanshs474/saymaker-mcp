@@ -38,20 +38,14 @@ export type Task = {
   media?: 'image' | 'video';
 };
 
-/** `x-anon-id` is client-generated and unverified: it is the key to a free
- *  browser-sized wallet, not an identity. One per process is what a signed-out
- *  visitor looks like; minting a fresh one per call to farm the grant is what
- *  the per-IP daily ceiling is there to stop, so we do not do it. */
-const ANON_ID = `mcp-${Math.random().toString(36).slice(2)}${Date.now().toString(36)}`;
-
 export class SayMakerError extends Error {}
 
 export const credentialsHint =
-  'Set SAYMAKER_API_KEY to run any model on your own credits — create a key at https://saymaker.ai/settings/apikeys. Without one this server runs on the signed-out free wallet, which covers one text-to-image run.';
+  'Set SAYMAKER_API_KEY to run on your own credits: create a key at https://saymaker.ai/settings/apikeys (new accounts get sign-up credits).';
 
 function authHeaders(): Record<string, string> {
   const key = process.env.SAYMAKER_API_KEY?.trim();
-  return key ? { authorization: `Bearer ${key}` } : { 'x-anon-id': ANON_ID };
+  return key ? { authorization: `Bearer ${key}` } : {};
 }
 
 export function hasApiKey(): boolean {
@@ -91,46 +85,23 @@ export async function submit(input: SubmitInput): Promise<Task> {
   // A refusal that arrives shaped like a success: HTTP 200, `code: 0`, and a
   // `wall` flag instead of a task. Reading only `code` hands back an object with
   // no id, and the confusing error surfaces one step later, on the poll.
-  const wall = data as { wall?: boolean; reason?: string; cost?: number };
+  // saymaker.ai answers a request without a valid key this way since it
+  // stopped serving signed-out runs.
+  const wall = data as { wall?: boolean; reason?: string };
   if (wall?.wall) {
-    const why =
-      wall.reason === 'anon_ip_daily'
-        ? "this machine has used up today's free anonymous credits"
-        : 'the free anonymous wallet is out of credits';
-    throw new SayMakerError(`${why} (this run needs ${wall.cost ?? '?'}). ${credentialsHint}`);
+    throw new SayMakerError(`SayMaker needs an API key for every run. ${credentialsHint}`);
   }
   return { ...(data as Task), provider: input.provider, media: input.media };
 }
 
-/**
- * Two endpoints, one for each identity. A signed-out run polled on
- * `/api/ai/query` comes back "no auth, please sign in" — the run itself was
- * accepted and charged, so the failure looks like a broken server rather than
- * the wrong door. Which one to knock on follows from whether a key is set.
- */
+/** Poll a run. Free-account runs wait in a queue and only start on the poll
+ *  that crosses the end of the wait, so polling is what starts the work. */
 export async function getTask(
   taskId: string,
-  ctx: { provider?: string; media?: 'image' | 'video' } = {}
+  _ctx: { provider?: string; media?: 'image' | 'video' } = {}
 ): Promise<Task> {
-  if (hasApiKey()) {
-    const data = await post('/api/ai/query', { taskId });
-    return data as Task;
-  }
-  const qs = new URLSearchParams({
-    taskId,
-    provider: ctx.provider ?? 'kie',
-    mediaType: ctx.media ?? 'image',
-  });
-  const res = await fetch(`${BASE_URL}/api/ai/anon-query?${qs}`, {
-    headers: authHeaders(),
-  });
-  const json = await res.json().catch(() => null);
-  if (!json || json.code !== 0) {
-    throw new SayMakerError(json?.message || `poll failed (${res.status})`);
-  }
-  // `id` last: the anon poll answers with status and media but no row id, and
-  // the id is what the caller polls with next.
-  return { ...(json.data as Task), id: taskId };
+  const data = await post('/api/ai/query', { taskId });
+  return { ...(data as Task), id: taskId };
 }
 
 /** Media URLs live in `taskResult`, whose shape varies by provider. */

@@ -6,13 +6,13 @@
     "url": "https://github.com/hanshs474/saymaker-mcp",
     "source": "github"
   },
-  "version": "0.1.0",
+  "version": "0.1.1",
   "websiteUrl": "https://saymaker.ai",
   "packages": [
     {
       "registryType": "npm",
       "identifier": "saymaker-mcp",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "transport": {
         "type": "stdio"
       }
